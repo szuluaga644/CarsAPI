@@ -3,7 +3,7 @@ const router = express.Router();
 const carController = require('../controllers/car.controller');
 const { param, query, body, validationResult } = require('express-validator');
 
-// Middleware para registrar logs de la lista de automóviles
+// Middleware para registrar logs de la lista de carros
 const logCarListRequest = (req, res, next) => {
     console.log(`[${new Date().toISOString()}] GET /api/cars - Page: ${req.query.page || 1}, Limit: ${req.query.limit || 10}`);
     next();
@@ -57,9 +57,9 @@ const validateIdParam = [
     }
 ];
 
-// Rutas para coches (REORDENADAS)
+// Rutas para carros
 router.get('/', logCarListRequest, carController.getAllCars);
-router.get('/filter', carController.filterCars);       // <-- MOVIDA ARRIBA
+router.get('/filter', carController.filterCars);
 router.get('/:id', validateIdParam, carController.getCarById);
 router.post('/', validateCarInput, carController.createCar);
 router.put('/:id', validateIdParam, validateCarInput, carController.updateCar);

@@ -40,19 +40,11 @@ const validateIdParam = [
     }
 ];
 
-// Ruta para crear una marca
+// Rutas
 router.post('/', validateBrandInput, brandController.createBrand);
-
-// Ruta para obtener todas las marcas
 router.get('/', brandController.getAllBrands);
-
-// Ruta para obtener una marca por ID
 router.get('/:id', validateIdParam, brandController.getBrandById);
-
-// Ruta para actualizar una marca por ID (PUT)
 router.put('/:id', validateIdParam, validateBrandInput, brandController.updateBrand);
-
-// Ruta para eliminar una marca por ID (DELETE)
 router.delete('/:id', validateIdParam, brandController.deleteBrand);
 
 module.exports = router;

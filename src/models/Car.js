@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
-const Brand = require('./Brand'); // esta línea importa correctamente Brand.js
+const Brand = require('./Brand');
 
 const Car = sequelize.define('Car', {
   id: {

@@ -1,80 +1,91 @@
-POST /api/brands:
-Descripción: Crea una nueva marca.
-Body: { "name": "Nombre de la marca" } (campo name es requerido, máximo 20 caracteres).
-Respuesta Exitosa (201): { "data": { "id": ..., "name": "..." }, "status": 201, "message": "Marca creada exitosamente" }.
-Respuesta Error (400): { "data": null, "status": 400, "message": "Error de validación", "errors": [...] } (si el nombre falta o excede la longitud) o { "data": null, "status": 400, "message": "Ya existe una marca con ese nombre." } (si el nombre ya existe).
-Respuesta Error (500): { "data": null, "status": 500, "message": "Error al crear la marca" }.
+Esta es una API fue construida con Node.js y Express.js, PostgreSQL, Jest y Docker
+El objetivo principal de esta API es gestionar un catálogo de automóviles y sus respectivas marcas. 
+Permite realizar operaciones CRUD.
 
-GET /api/brands:
-Descripción: Obtiene la lista de todas las marcas.
-Respuesta Exitosa (200): { "data": [ { "id": ..., "name": "..." }, ... ], "status": 200, "message": "Marcas obtenidas correctamente" }.
-Respuesta Error (500): { "data": null, "status": 500, "message": "Error al obtener las marcas" }.
+Para ejecutar pruebas unitarias: npm test
 
-GET /api/brands/:id:
-Descripción: Obtiene una marca específica por su ID.
-Parámetros de la URL: id (entero positivo requerido).
-Respuesta Exitosa (200): { "data": { "id": ..., "name": "..." }, "status": 200, "message": "Marca encontrada" }.
-Respuesta Error (400): { "data": null, "status": 400, "message": "Error de validación en el ID", "errors": [...] } (si el ID no es válido).
-Respuesta Error (404): { "data": null, "status": 404, "message": "Marca no encontrada" }.
-Respuesta Error (500): { "data": null, "status": 500, "message": "Error al obtener la marca" }.
+Para Dockerizar: docker build -t backend-cars-api .
+Para correr Docker: docker run -p 8020:8020 backend-cars-api
 
-PUT /api/brands/:id:
-Descripción: Actualiza una marca existente por su ID.
-Parámetros de la URL: id (entero positivo requerido).
-Body: { "name": "Nuevo nombre de la marca" } (campo name es requerido, máximo 20 caracteres).
-Respuesta Exitosa (200): { "data": { "id": ..., "name": "Nuevo nombre de la marca" }, "status": 200, "message": "Marca actualizada exitosamente" }.
-Respuesta Error (400): { "data": null, "status": 400, "message": "Error de validación", "errors": [...] } (si el nombre no es válido) o { "data": null, "status": 400, "message": "Ya existe una marca con ese nombre." }.
-Respuesta Error (404): { "data": null, "status": 404, "message": "Marca no encontrada" }.
-Respuesta Error (500): { "data": null, "status": 500, "message": "Error al actualizar la marca" }.
+EndPoints de la API:
+Marcas:
+POST /api/brands: Crea una nueva marca
+Body: { 
+    "name": "Nombre de la marca"
+     }
+Respuesta Exitosa (201): "Marca creada exitosamente"
+Respuesta Error (400): "Error de validación", "Ya existe una marca con ese nombre."
+Respuesta Error (500): "Error al crear la marca"
 
-DELETE /api/brands/:id:
-Descripción: Elimina una marca existente por su ID.
-Parámetros de la URL: id (entero positivo requerido).
-Respuesta Exitosa (200): { "data": null, "status": 200, "message": "Marca eliminada exitosamente" }.
-Respuesta Error (400): { "data": null, "status": 400, "message": "Error de validación en el ID", "errors": [...] } (si el ID no es válido).
-Respuesta Error (404): { "data": null, "status": 404, "message": "Marca no encontrada" }.
-Respuesta Error (500): { "data": null, "status": 500, "message": "Error al eliminar la marca" }.
+GET /api/brands: Obtiene la lista de todas las marcas
+Respuesta Exitosa (200): "Marcas obtenidas correctamente"
+Respuesta Error (500): "Error al obtener las marcas"
 
-GET /api/cars:
-Descripción: Obtiene la lista paginada de automóviles.
-Query Parameters: page (entero, página a mostrar, por defecto 1), limit (entero, cantidad de autos por página, por defecto 10).
-Respuesta Exitosa (200): { "data": { "cars": [ ... ], "total": ..., "page": ..., "totalPages": ... }, "status": 200, "message": "Autos obtenidos correctamente" }.
-Respuesta Error (500): { "data": null, "status": 500, "message": "Error al obtener autos" }.
+GET /api/brands/(id): Obtiene una marca específica por su ID. Requiere un numero entero positivo
+Respuesta Exitosa (200): "Marca encontrada"
+Respuesta Error (400): "Error de validación en el ID"
+Respuesta Error (404): "Marca no encontrada"
+Respuesta Error (500): "Error al obtener la marca"
 
-GET /api/cars/:id:
-Descripción: Obtiene los detalles de un automóvil específico por su ID (incluyendo la marca).
-Parámetros de la URL: id (entero positivo requerido).
-Respuesta Exitosa (200): { "data": { ... }, "status": 200, "message": "Auto encontrado" }.
-Respuesta Error (400): { "data": null, "status": 400, "message": "Error de validación en el ID", "errors": [...] }.
-Respuesta Error (404): { "data": null, "status": 404, "message": "Auto no encontrado" }.
-Respuesta Error (500): { "data": null, "status": 500, "message": "Error al obtener el auto" }.
+PUT /api/brands/(id): Actualiza una marca existente por ID. Requiere un numero entero positivo
+Body: {
+    "name": "Nuevo nombre de la marca"
+     }
+Respuesta Exitosa (200): "Marca actualizada exitosamente"
+Respuesta Error (400): "Error de validación", "Ya existe una marca con ese nombre."
+Respuesta Error (404): "Marca no encontrada"
+Respuesta Error (500): "Error al actualizar la marca"
 
-POST /api/cars:
-Descripción: Agrega un nuevo automóvil.
-Body: { "modelo": "...", "descripcion": "...", "precio": ..., "kilometraje": ..., "brandId": ... } (modelo, precio, kilometraje, brandId son requeridos).
-Respuesta Exitosa (201): { "data": { ... }, "status": 201, "message": "Auto creado exitosamente" }.
-Respuesta Error (400): { "data": null, "status": 400, "message": "Error de validación", "errors": [...] }.
-Respuesta Error (500): { "data": null, "status": 500, "message": "Error al crear el auto" }.
+DELETE /api/brands/(id): Elimina una marca existente por ID. Requiere numero entero positivo
+Respuesta Exitosa (200): "Marca eliminada exitosamente"
+Respuesta Error (400): "Error de validación en el ID"
+Respuesta Error (404): "Marca no encontrada"
+Respuesta Error (500): "Error al eliminar la marca"
 
-PUT /api/cars/:id:
-Descripción: Actualiza un automóvil existente por su ID.
-Parámetros de la URL: id (entero positivo requerido).
-Body: { "modelo": "...", "descripcion": "...", "precio": ..., "kilometraje": ..., "brandId": ... } (todos los campos validados).
-Respuesta Exitosa (200): { "data": { ... }, "status": 200, "message": "Auto actualizado exitosamente" }.
-Respuesta Error (400): { "data": null, "status": 400, "message": "Error de validación", "errors": [...] }.
-Respuesta Error (404): { "data": null, "status": 404, "message": "Auto no encontrado" }.
-Respuesta Error (500): { "data": null, "status": 500, "message": "Error al actualizar el auto" }.
+Carros:
+GET /api/cars: Obtiene la lista de carros
+Respuesta Exitosa (200): "Autos obtenidos correctamente"
+Respuesta Error (500): "Error al obtener autos"
 
-DELETE /api/cars/:id:
-Descripción: Elimina un automóvil existente por su ID.
-Parámetros de la URL: id (entero positivo requerido).
-Respuesta Exitosa (200): { "data": null, "status": 200, "message": "Auto eliminado exitosamente" }.
-Respuesta Error (400): { "data": null, "status": 400, "message": "Error de validación en el ID", "errors": [...] }.
-Respuesta Error (404): { "data": null, "status": 404, "message": "Auto no encontrado" }.
-Respuesta Error (500): { "data": null, "status": 500, "message": "Error al eliminar el auto" }.
+GET /api/cars/(id): Obtiene los detalles de un carro en específico por ID. Requiere numero entero positivo
+Respuesta Exitosa (200): "Auto encontrado"
+Respuesta Error (400): "Error de validación en el ID"
+Respuesta Error (404): "Auto no encontrado"
+Respuesta Error (500): "Error al obtener el auto"
 
-GET /api/cars/filter:
-Descripción: Filtra automóviles por modelo, precio y/o kilometraje.
-Query Parameters: modelo (string, para buscar por modelo), precio (entero, para buscar por precio exacto), precio_min (entero, precio mínimo), precio_max (entero, precio máximo), kilometraje (entero, para buscar por kilometraje exacto), kilometraje_min (entero, kilometraje mínimo), kilometraje_max (entero, kilometraje máximo).
-Respuesta Exitosa (200): { "data": [ ... ], "status": 200, "message": "Autos filtrados correctamente" }.
-Respuesta Error (500): { "data": null, "status": 500, "message": "Error al filtrar los autos" }.
+POST /api/cars: Agrega un nuevo automóvil.
+Body: { 
+    "modelo": "string", (Requerido) 
+    "descripcion": "string", (No Req)
+    "precio": entero, (Req)
+    "kilometraje": entero, (Req)
+    "brandId": entero (Req)
+     } 
+Respuesta Exitosa (201): "Auto creado exitosamente"
+Respuesta Error (400): "Error de validación"
+Respuesta Error (500): "Error al crear el auto"
+
+PUT /api/cars/(id): Actualiza un carro existente por ID. Requiere numero entero positivo
+Body: { 
+    "modelo": "", 
+    "descripcion": "", 
+    "precio": , 
+    "kilometraje": , 
+    "brandId": 
+     }
+Respuesta Exitosa (200): "Auto actualizado exitosamente"
+Respuesta Error (400): "Error de validación"
+Respuesta Error (404): "Auto no encontrado"
+Respuesta Error (500): "Error al actualizar el auto"
+
+DELETE /api/cars/(id): Elimina uncarro existente por ID.
+Respuesta Exitosa (200): "Auto eliminado exitosamente" 
+Respuesta Error (400): "Error de validación en el ID"
+Respuesta Error (404): "Auto no encontrado"
+Respuesta Error (500): "Error al eliminar el auto"
+
+GET /api/cars/filter: Filtra carros por modelo, precio y kilometraje
+Respuesta Exitosa (200): "Autos filtrados correctamente"
+Respuesta Error (500): "Error al filtrar los autos"
+
+Autor: Sebastian Zuluaga Sosa
