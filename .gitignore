@@ -1,0 +1,9 @@
+node_modules
+.env
+coverage
+__tests__/controllers
+dist/
+build/
+.DS_Store
+npm-debug.log
+yarn-error.log
